@@ -1,0 +1,11 @@
+name: vercel-multi-domain
+runtime:
+  name: python
+  options:
+    toolchain: pip
+    virtualenv: venv
+description: A vercel site using a preexisting supabase database.
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: https://www.pulumi.com/ai/api/project/eb8559a2-0894-43e4-b5aa-6bfdc0b3db43.zip
