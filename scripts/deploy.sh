@@ -9,12 +9,20 @@ fi
 
 # Store the org slug
 ORG_SLUG=$1
-STACK_PROJECT="codefold/vercel-multi-domain"
-ENV_PROJECT="codefold/vercel-multi-domain"
+PULUMI_ORG="${PULUMI_ORG}"
+PULUMI_IAC_PROJECT="${PULUMI_IAC_PROJECT}"
+PULUMI_ESC_PROJECT="${PULUMI_ESC_PROJECT}"
+
+# Check if all required environment variables are set
+if [ -z "$PULUMI_ORG" ] || [ -z "$PULUMI_IAC_PROJECT" ] || [ -z "$PULUMI_ESC_PROJECT" ]; then
+    echo "Error: One or more required environment variables are not set."
+    echo "Please ensure PULUMI_ORG, PULUMI_IAC_PROJECT, and PULUMI_ESC_PROJECT are set."
+    exit 1
+fi
 
 # Create the environment file
 echo "Creating environment file for ${ORG_SLUG}..."
-pulumi env open ${ENV_PROJECT}/${ORG_SLUG}-vite --format dotenv > ./demo-site/.env
+pulumi env open ${PULUMI_ORG}/${PULUMI_ESC_PROJECT}/${ORG_SLUG}-iac --format dotenv > ./iac/.env
 
 # Check if the environment file creation was successful
 if [ $? -ne 0 ]; then
@@ -44,11 +52,23 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Copy Pulumi.template.yaml to Pulumi.yaml
+echo "Generating Pulumi.yaml..."
+sed 's|<PULUMI_IAC_PROJECT>|'"${PULUMI_IAC_PROJECT}"'|g' Pulumi.template.yaml > Pulumi.yaml
+
+# Check if the file update was successful
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to update Pulumi.yaml"
+    deactivate
+    exit 1
+fi
+
+
 
 # Select the stack
 echo "Selecting stack..."
 pulumi stack select -c \
-            --stack "${STACK_PROJECT}/${ORG_SLUG}"
+            --stack "${PULUMI_ORG}/${PULUMI_IAC_PROJECT}/${ORG_SLUG}"
 
 # Check if the stack selection was successful
 if [ $? -ne 0 ]; then
@@ -59,7 +79,7 @@ fi
 
 # Run Pulumi up
 echo "Running Pulumi up..."
-pulumi env run "${ENV_PROJECT}/${ORG_SLUG}-iac" -- pulumi up --yes --non-interactive
+pulumi env run "${PULUMI_ORG}/${PULUMI_ESC_PROJECT}/${ORG_SLUG}-iac" -- pulumi up --yes --non-interactive
 
 # Check if Pulumi up was successful
 if [ $? -ne 0 ]; then

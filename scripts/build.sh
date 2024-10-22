@@ -9,10 +9,19 @@ fi
 
 # Store the org slug
 ORG_SLUG=$1
+PULUMI_ORG="${PULUMI_ORG}"
+PULUMI_ESC_PROJECT="${PULUMI_ESC_PROJECT}"
+
+# Check if all required environment variables are set
+if [ -z "$PULUMI_ORG" ] || [ -z "$PULUMI_ESC_PROJECT" ]; then
+    echo "Error: One or more required environment variables are not set."
+    echo "Please ensure PULUMI_ORG and PULUMI_ESC_PROJECT are set."
+    exit 1
+fi
 
 # Create the environment file
-echo "Creating environment file for $ORG_SLUG..."
-pulumi env open codefold/vercel-multi-domain/${ORG_SLUG}-vite --format dotenv > ./demo-site/.env
+echo "Creating environment file for ${ORG_SLUG}..."
+pulumi env open ${PULUMI_ORG}/${PULUMI_ESC_PROJECT}/${ORG_SLUG}-iac --format dotenv > ./iac/.env
 
 # Check if the environment file creation was successful
 if [ $? -ne 0 ]; then

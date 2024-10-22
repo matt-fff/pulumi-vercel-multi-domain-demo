@@ -1,4 +1,4 @@
-name: vercel-multi-domain
+name: <PULUMI_IAC_PROJECT>
 runtime:
   name: python
   options:
