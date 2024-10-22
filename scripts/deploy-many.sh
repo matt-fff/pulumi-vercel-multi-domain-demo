@@ -12,7 +12,7 @@ do
     echo "Deploying for organization: $slug"
     
     # Run deploy.sh with the current slug as a parameter
-    ./deploy.sh "$slug"
+    ./scripts/deploy.sh "$slug"
     
     # Check the exit status of deploy.sh
     if [ $? -eq 0 ]; then
