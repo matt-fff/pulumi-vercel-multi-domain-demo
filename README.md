@@ -21,6 +21,7 @@ choco install pulumi
 ```
 
 **Linux**
+
 Your own package manager, or:
 
 ```
