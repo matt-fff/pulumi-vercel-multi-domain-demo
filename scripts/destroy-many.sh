@@ -1,5 +1,7 @@
 #!/bin/sh
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 # Check if any arguments were provided
 if [ $# -eq 0 ]; then
     echo "Usage: $0 <slug1> <slug2> <slug3> ..."
@@ -12,7 +14,7 @@ do
     echo "Destroying for organization: $slug"
     
     # Run deploy.sh with the current slug as a parameter
-    ./scripts/destroy.sh "$slug"
+    "${SCRIPT_DIR}/destroy.sh" "$slug"
     
     # Check the exit status of deploy.sh
     if [ $? -eq 0 ]; then

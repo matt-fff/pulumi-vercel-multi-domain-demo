@@ -1,3 +1,2 @@
 pulumi>=3
-pulumi_supabase
 pulumiverse_vercel>=0.15.4
