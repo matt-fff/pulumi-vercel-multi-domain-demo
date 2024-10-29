@@ -23,7 +23,7 @@ fi
 
 # Create the environment file
 echo "Creating environment file for ${ORG_SLUG}..."
-pulumi env open ${PULUMI_ORG}/${PULUMI_ESC_PROJECT}/${ORG_SLUG}-iac --format dotenv > ./iac/.env
+pulumi env open ${PULUMI_ORG}/${PULUMI_ESC_PROJECT}/${ORG_SLUG}-vite --format dotenv > ./demo-site/.env
 
 # Check if the environment file creation was successful
 if [ $? -ne 0 ]; then
